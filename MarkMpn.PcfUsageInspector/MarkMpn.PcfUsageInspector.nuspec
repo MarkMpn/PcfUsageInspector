@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MarkMpn.PcfUsageInspector</id>
+    <version>1.0.0</version>
+    <title>PCF Usage Inspector</title>
+    <authors>Mark Carrington</authors>
+    <owners>MarkMpn</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://markcarrington.dev/</projectUrl>
+    <iconUrl>http://markcarrington.dev/pcf-usage-inspector-icon/</iconUrl>
+    <description>PCF Usage Inspector makes it simple to identify which PCF controls are in use on which forms or views.
+
+It also highlights controls known to be deprecated to simplify the process of updating to use new alternatives.</description>
+    <summary>Identify where PCF controls are being used</summary>
+    <releaseNotes>First release!</releaseNotes>
+    <copyright>Copyright © 2021 Mark Carrington</copyright>
+    <language>en-GB</language>
+    <tags>XrmToolBox PCF Usage</tags>
+    <dependencies>
+      <dependency id="XrmToolBox" version="1.2018.1.20" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Plugins\MarkMpn.PcfUsageInspector.dll" target="lib\net452\Plugins\MarkMpn.Sql4Cds.dll" />
+  </files>
+</package>
