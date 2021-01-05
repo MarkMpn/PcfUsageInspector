@@ -12,10 +12,11 @@ using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk;
 using McTools.Xrm.Connection;
 using System.Diagnostics;
+using XrmToolBox.Extensibility.Interfaces;
 
 namespace MarkMpn.PcfUsageInspector
 {
-    public partial class PcfUsageInspectorPluginControl : PluginControlBase
+    public partial class PcfUsageInspectorPluginControl : PluginControlBase, IGitHubPlugin
     {
         class CustomControl
         {
@@ -55,6 +56,10 @@ namespace MarkMpn.PcfUsageInspector
             ["MscrmControls.WebsitePreview.PreviewControl"] = "This control is deprecated",
             ["MscrmControls.MultiSelectPicklist.MultiSelectPicklistControl"] = "This control is deprecated"
         };
+
+        string IGitHubPlugin.UserName => "MarkMpn";
+
+        string IGitHubPlugin.RepositoryName => "PcfUsageInspector";
 
         public PcfUsageInspectorPluginControl()
         {
