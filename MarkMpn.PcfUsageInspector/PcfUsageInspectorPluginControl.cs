@@ -11,6 +11,7 @@ using XrmToolBox.Extensibility;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk;
 using McTools.Xrm.Connection;
+using System.Diagnostics;
 
 namespace MarkMpn.PcfUsageInspector
 {
@@ -259,6 +260,11 @@ namespace MarkMpn.PcfUsageInspector
                 else
                     row.Visible = true;
             }
+        }
+
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://markcarrington.dev/");
         }
     }
 }

@@ -29,14 +29,15 @@
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.solutionComboBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.solutionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.controlNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.usagesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label2 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.solutionComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.linkLabel = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -54,11 +55,30 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.Size = new System.Drawing.Size(559, 241);
+            this.dataGridView.Size = new System.Drawing.Size(743, 241);
             this.dataGridView.TabIndex = 0;
+            // 
+            // solutionColumn
+            // 
+            this.solutionColumn.HeaderText = "Solution";
+            this.solutionColumn.Name = "solutionColumn";
+            this.solutionColumn.ReadOnly = true;
+            // 
+            // controlNameColumn
+            // 
+            this.controlNameColumn.HeaderText = "Control Name";
+            this.controlNameColumn.Name = "controlNameColumn";
+            this.controlNameColumn.ReadOnly = true;
+            // 
+            // usagesColumn
+            // 
+            this.usagesColumn.HeaderText = "Usages";
+            this.usagesColumn.Name = "usagesColumn";
+            this.usagesColumn.ReadOnly = true;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.linkLabel);
             this.panel1.Controls.Add(this.nameTextBox);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.solutionComboBox);
@@ -66,8 +86,25 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(559, 59);
+            this.panel1.Size = new System.Drawing.Size(743, 59);
             this.panel1.TabIndex = 1;
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.Location = new System.Drawing.Point(91, 30);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(278, 20);
+            this.nameTextBox.TabIndex = 3;
+            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 33);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Search by name";
             // 
             // solutionComboBox
             // 
@@ -90,40 +127,19 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Filter by solution";
             // 
-            // solutionColumn
+            // linkLabel
             // 
-            this.solutionColumn.HeaderText = "Solution";
-            this.solutionColumn.Name = "solutionColumn";
-            this.solutionColumn.ReadOnly = true;
-            // 
-            // controlNameColumn
-            // 
-            this.controlNameColumn.HeaderText = "Control Name";
-            this.controlNameColumn.Name = "controlNameColumn";
-            this.controlNameColumn.ReadOnly = true;
-            // 
-            // usagesColumn
-            // 
-            this.usagesColumn.HeaderText = "Usages";
-            this.usagesColumn.Name = "usagesColumn";
-            this.usagesColumn.ReadOnly = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Search by name";
-            // 
-            // nameTextBox
-            // 
-            this.nameTextBox.Location = new System.Drawing.Point(91, 30);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(278, 20);
-            this.nameTextBox.TabIndex = 3;
-            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
+            this.linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel.Image = global::MarkMpn.PcfUsageInspector.Properties.Resources.PcfUsageInspector16x16;
+            this.linkLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkLabel.Location = new System.Drawing.Point(522, 6);
+            this.linkLabel.Name = "linkLabel";
+            this.linkLabel.Size = new System.Drawing.Size(218, 13);
+            this.linkLabel.TabIndex = 2;
+            this.linkLabel.TabStop = true;
+            this.linkLabel.Text = "PCF Usage Inspector by Mark Carrington";
+            this.linkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
             // 
             // PcfUsageInspectorPluginControl
             // 
@@ -132,7 +148,7 @@
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.panel1);
             this.Name = "PcfUsageInspectorPluginControl";
-            this.Size = new System.Drawing.Size(559, 300);
+            this.Size = new System.Drawing.Size(743, 300);
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -152,5 +168,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn usagesColumn;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.LinkLabel linkLabel;
     }
 }
