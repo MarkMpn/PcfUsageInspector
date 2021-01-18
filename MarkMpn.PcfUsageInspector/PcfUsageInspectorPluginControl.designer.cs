@@ -33,11 +33,12 @@
             this.controlNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.usagesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.linkLabel = new System.Windows.Forms.LinkLabel();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.solutionComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.linkLabel = new System.Windows.Forms.LinkLabel();
+            this.btnExpectedControls = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -51,11 +52,11 @@
             this.controlNameColumn,
             this.usagesColumn});
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 59);
+            this.dataGridView.Location = new System.Drawing.Point(0, 86);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.Size = new System.Drawing.Size(743, 241);
+            this.dataGridView.Size = new System.Drawing.Size(743, 214);
             this.dataGridView.TabIndex = 0;
             // 
             // solutionColumn
@@ -78,6 +79,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnExpectedControls);
             this.panel1.Controls.Add(this.linkLabel);
             this.panel1.Controls.Add(this.nameTextBox);
             this.panel1.Controls.Add(this.label2);
@@ -86,8 +88,22 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(743, 59);
+            this.panel1.Size = new System.Drawing.Size(743, 86);
             this.panel1.TabIndex = 1;
+            // 
+            // linkLabel
+            // 
+            this.linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel.Image = global::MarkMpn.PcfUsageInspector.Properties.Resources.PcfUsageInspector16x16;
+            this.linkLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkLabel.Location = new System.Drawing.Point(522, 6);
+            this.linkLabel.Name = "linkLabel";
+            this.linkLabel.Size = new System.Drawing.Size(218, 13);
+            this.linkLabel.TabIndex = 2;
+            this.linkLabel.TabStop = true;
+            this.linkLabel.Text = "PCF Usage Inspector by Mark Carrington";
+            this.linkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
             // 
             // nameTextBox
             // 
@@ -127,19 +143,15 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Filter by solution";
             // 
-            // linkLabel
+            // btnExpectedControls
             // 
-            this.linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel.Image = global::MarkMpn.PcfUsageInspector.Properties.Resources.PcfUsageInspector16x16;
-            this.linkLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel.Location = new System.Drawing.Point(522, 6);
-            this.linkLabel.Name = "linkLabel";
-            this.linkLabel.Size = new System.Drawing.Size(218, 13);
-            this.linkLabel.TabIndex = 2;
-            this.linkLabel.TabStop = true;
-            this.linkLabel.Text = "PCF Usage Inspector by Mark Carrington";
-            this.linkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            this.btnExpectedControls.Location = new System.Drawing.Point(91, 56);
+            this.btnExpectedControls.Name = "btnExpectedControls";
+            this.btnExpectedControls.Size = new System.Drawing.Size(132, 23);
+            this.btnExpectedControls.TabIndex = 2;
+            this.btnExpectedControls.Text = "Edit Expected Controls";
+            this.btnExpectedControls.UseVisualStyleBackColor = true;
+            this.btnExpectedControls.Click += new System.EventHandler(this.btnExpectedControls_Click);
             // 
             // PcfUsageInspectorPluginControl
             // 
@@ -169,5 +181,6 @@
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel;
+        private System.Windows.Forms.Button btnExpectedControls;
     }
 }

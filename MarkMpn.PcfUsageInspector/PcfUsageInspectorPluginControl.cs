@@ -57,6 +57,8 @@ namespace MarkMpn.PcfUsageInspector
             ["MscrmControls.MultiSelectPicklist.MultiSelectPicklistControl"] = "This control is deprecated"
         };
 
+        private ExpectedControls _expectedControls;
+
         string IGitHubPlugin.UserName => "MarkMpn";
 
         string IGitHubPlugin.RepositoryName => "PcfUsageInspector";
@@ -68,6 +70,9 @@ namespace MarkMpn.PcfUsageInspector
 
         private void MyPluginControl_Load(object sender, EventArgs e)
         {
+            if (!SettingsManager.Instance.TryLoad(GetType(), out _expectedControls, "ExpectedControls"))
+                _expectedControls = new ExpectedControls();
+
             if (ConnectionDetail != null)
                 LoadControls();
         }
@@ -297,6 +302,18 @@ namespace MarkMpn.PcfUsageInspector
         private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://markcarrington.dev/");
+        }
+
+        private void btnExpectedControls_Click(object sender, EventArgs e)
+        {
+            using (var form = new ExpectedControlsForm(_expectedControls))
+            {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    SettingsManager.Instance.Save(GetType(), _expectedControls, "ExpectedControls");
+                    LoadControls();
+                }
+            }
         }
     }
 }

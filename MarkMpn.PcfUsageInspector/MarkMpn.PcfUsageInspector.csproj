@@ -132,6 +132,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpectedControls.cs" />
+    <Compile Include="ExpectedControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExpectedControlsForm.Designer.cs">
+      <DependentUpon>ExpectedControlsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PcfUsageInspectorPlugin.cs" />
     <Compile Include="PcfUsageInspectorPluginControl.cs">
       <SubType>UserControl</SubType>
@@ -151,6 +158,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ExpectedControlsForm.resx">
+      <DependentUpon>ExpectedControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PcfUsageInspectorPluginControl.resx">
       <DependentUpon>PcfUsageInspectorPluginControl.cs</DependentUpon>
     </EmbeddedResource>
