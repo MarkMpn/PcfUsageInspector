@@ -22,7 +22,7 @@ namespace MarkMpn.PcfUsageInspector
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
-            public Guid? SolutionId { get; set; }
+            public List<Solution> Solutions { get; } = new List<Solution>();
             public List<Dependency> Dependencies { get; } = new List<Dependency>();
         }
 
@@ -89,13 +89,26 @@ namespace MarkMpn.PcfUsageInspector
 
                     var qry = new QueryExpression("customcontrol")
                     {
-                        ColumnSet = new ColumnSet("name", "solutionid"),
+                        ColumnSet = new ColumnSet("name"),
                         LinkEntities =
                         {
-                            new LinkEntity("customcontrol", "solution", "solutionid", "solutionid", JoinOperator.LeftOuter)
+                            new LinkEntity("customcontrol", "solutioncomponent", "customcontrolid", "objectid", JoinOperator.LeftOuter)
                             {
-                                EntityAlias = "solution",
-                                Columns = new ColumnSet("friendlyname")
+                                LinkEntities =
+                                {
+                                    new LinkEntity("solutioncomponent", "solution", "solutionid", "solutionid", JoinOperator.LeftOuter)
+                                    {
+                                        EntityAlias = "solution",
+                                        Columns = new ColumnSet("solutionid", "friendlyname"),
+                                        LinkCriteria = new FilterExpression
+                                        {
+                                            Conditions =
+                                            {
+                                                new ConditionExpression("isvisible", ConditionOperator.Equal, true)
+                                            }
+                                        }
+                                    }
+                                }
                             },
                             new LinkEntity("customcontrol", "dependency", "customcontrolid", "requiredcomponentobjectid", JoinOperator.LeftOuter)
                             {
@@ -134,19 +147,28 @@ namespace MarkMpn.PcfUsageInspector
                                 control = new CustomControl
                                 {
                                     Id = record.Id,
-                                    Name = record.GetAttributeValue<string>("name"),
-                                    SolutionId = record.GetAttributeValue<Guid?>("solutionid")
+                                    Name = record.GetAttributeValue<string>("name")
                                 };
                                 controls[control.Id] = control;
+                            }
 
-                                if (control.SolutionId != null && !solutions.ContainsKey(control.SolutionId.Value))
+                            var solutionId = (Guid?) record.GetAttributeValue<AliasedValue>("solution.solutionid")?.Value;
+                            if (solutionId != null)
+                            {
+                                if (!solutions.TryGetValue(solutionId.Value, out var solution))
                                 {
-                                    var solution = new Solution
+                                    solution = new Solution
                                     {
-                                        Id = control.SolutionId.Value,
+                                        Id = solutionId.Value,
                                         Name = (string)record.GetAttributeValue<AliasedValue>("solution.friendlyname").Value
                                     };
                                     solutions[solution.Id] = solution;
+                                }
+
+                                if (!control.Solutions.Contains(solution))
+                                {
+                                    control.Solutions.Add(solution);
+                                    control.Solutions.Sort((x, y) => x.Name.CompareTo(y.Name));
                                 }
                             }
 
@@ -159,7 +181,9 @@ namespace MarkMpn.PcfUsageInspector
                                     EntityName = (string)record.GetAttributeValue<AliasedValue>("form.objecttypecode").Value,
                                     Name = (string)record.GetAttributeValue<AliasedValue>("form.name").Value
                                 };
-                                control.Dependencies.Add(form);
+
+                                if (!control.Dependencies.Any(d => d.Id == form.Id))
+                                    control.Dependencies.Add(form);
                             }
 
                             if (record.Contains("view.name"))
@@ -171,7 +195,9 @@ namespace MarkMpn.PcfUsageInspector
                                     EntityName = (string)record.GetAttributeValue<AliasedValue>("view.returnedtypecode").Value,
                                     Name = (string)record.GetAttributeValue<AliasedValue>("view.name").Value
                                 };
-                                control.Dependencies.Add(view);
+
+                                if (!control.Dependencies.Any(d => d.Id == view.Id))
+                                    control.Dependencies.Add(view);
                             }
                         }
 
@@ -200,11 +226,12 @@ namespace MarkMpn.PcfUsageInspector
                     var solutions = ((List<Solution>)solutionComboBox.DataSource).ToDictionary(sln => sln.Id);
                     dataGridView.Rows.Clear();
 
-                    foreach (var control in controls.Values.OrderBy(cc => cc.SolutionId == null ? "" : solutions[cc.SolutionId.Value].Name).ThenBy(cc => cc.Name))
+                    foreach (var control in controls.Values.OrderBy(cc => String.Join(", ", cc.Solutions.Select(s => s.Name))).ThenBy(cc => cc.Name))
                     {
                         var rowIndex = dataGridView.Rows.Add();
                         var row = dataGridView.Rows[rowIndex];
-                        row.Cells[0] = new DataGridViewTextBoxCell { Value = control.SolutionId == null ? "" : solutions[control.SolutionId.Value].Name, Tag = control.SolutionId };
+                        row.Tag = control;
+                        row.Cells[0] = new DataGridViewTextBoxCell { Value = String.Join(", ", control.Solutions.Select(s => s.Name)) };
                         row.Cells[1] = new DataGridViewTextBoxCell { Value = control.Name };
                         row.Cells[2] = new DataGridViewTextBoxCell { Value = String.Join(", ", control.Dependencies.Select(dep => $"{dep.Type} \"{dep.Name}\" on {dep.EntityName}")) };
 
@@ -256,11 +283,11 @@ namespace MarkMpn.PcfUsageInspector
 
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                var name = (string)((DataGridViewTextBoxCell)row.Cells[1]).Value;
+                var control = (CustomControl)row.Tag;
 
-                if (name.IndexOf(nameTextBox.Text, StringComparison.OrdinalIgnoreCase) == -1)
+                if (control.Name.IndexOf(nameTextBox.Text, StringComparison.OrdinalIgnoreCase) == -1)
                     row.Visible = false;
-                else if (solutionId != Guid.Empty && (Guid?) row.Cells[0].Tag != solutionId)
+                else if (solutionId != Guid.Empty && !control.Solutions.Any(s => s.Id == solutionId))
                     row.Visible = false;
                 else
                     row.Visible = true;
