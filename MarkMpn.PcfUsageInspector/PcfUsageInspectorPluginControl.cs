@@ -284,11 +284,10 @@ namespace MarkMpn.PcfUsageInspector
         {
             using (var form = new ExpectedControlsForm(_controls, _expectedControls.Rules))
             {
-                if (form.ShowDialog(this) == DialogResult.OK)
-                {
-                    SettingsManager.Instance.Save(GetType(), _expectedControls, "ExpectedControls");
-                    LoadControls();
-                }
+                form.ShowDialog(this);
+                
+                SettingsManager.Instance.Save(GetType(), _expectedControls, "ExpectedControls");
+                LoadControls();
             }
         }
     }

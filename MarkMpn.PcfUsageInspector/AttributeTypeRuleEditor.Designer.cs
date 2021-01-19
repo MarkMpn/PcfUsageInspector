@@ -37,17 +37,19 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 13);
+            this.label1.Size = new System.Drawing.Size(113, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Attribute Type:";
+            this.label1.Text = "for all attributes of type";
             // 
             // attributeTypeComboBox
             // 
+            this.attributeTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.attributeTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.attributeTypeComboBox.FormattingEnabled = true;
             this.attributeTypeComboBox.Location = new System.Drawing.Point(6, 16);
             this.attributeTypeComboBox.Name = "attributeTypeComboBox";
-            this.attributeTypeComboBox.Size = new System.Drawing.Size(1113, 21);
+            this.attributeTypeComboBox.Size = new System.Drawing.Size(1088, 21);
             this.attributeTypeComboBox.TabIndex = 1;
             this.attributeTypeComboBox.SelectedValueChanged += new System.EventHandler(this.attributeTypeComboBox_SelectedValueChanged);
             // 
@@ -58,7 +60,7 @@
             this.Controls.Add(this.attributeTypeComboBox);
             this.Controls.Add(this.label1);
             this.Name = "AttributeTypeRuleEditor";
-            this.Size = new System.Drawing.Size(1122, 607);
+            this.Size = new System.Drawing.Size(1097, 607);
             this.ResumeLayout(false);
             this.PerformLayout();
 

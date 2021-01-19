@@ -50,6 +50,7 @@ namespace MarkMpn.PcfUsageInspector
             var rule = Activator.CreateInstance(type);
 
             var item = ruleListView.Items.Add("");
+            item.SubItems.Add("");
             item.Tag = rule;
 
             item.Selected = true;
@@ -57,7 +58,7 @@ namespace MarkMpn.PcfUsageInspector
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            addContextMenuStrip.Show((Control)sender, Point.Empty, ToolStripDropDownDirection.Default);
+            addContextMenuStrip.Show((Control)sender, new Point(0, addButton.Height), ToolStripDropDownDirection.Default);
         }
 
         private void ruleListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -84,11 +85,16 @@ namespace MarkMpn.PcfUsageInspector
             _ruleEditor.Rule = rule;
             _ruleEditor.ParameterChanged += (s, a) => ruleListView.SelectedItems[0].SubItems[1].Text = rule.GetParameterDescription();
             splitContainer1.Panel2.Controls.Add(_ruleEditor);
+            splitContainer1.Panel2.Controls.SetChildIndex(_ruleEditor, 0);
         }
 
         private void controlComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var control = (CustomControl)controlComboBox.SelectedItem;
+
+            if (control == null)
+                return;
+
             var rule = (Rule)ruleListView.SelectedItems[0].Tag;
             rule.ControlName = control.Name;
             ruleListView.SelectedItems[0].Text = control.Name;

@@ -37,16 +37,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 13);
+            this.label1.Size = new System.Drawing.Size(221, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Global Option Set:";
+            this.label1.Text = "for all picklist attributes using global option set";
             // 
             // globalOptionSetComboBox
             // 
+            this.globalOptionSetComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.globalOptionSetComboBox.FormattingEnabled = true;
             this.globalOptionSetComboBox.Location = new System.Drawing.Point(6, 25);
             this.globalOptionSetComboBox.Name = "globalOptionSetComboBox";
-            this.globalOptionSetComboBox.Size = new System.Drawing.Size(1113, 21);
+            this.globalOptionSetComboBox.Size = new System.Drawing.Size(1088, 21);
             this.globalOptionSetComboBox.TabIndex = 1;
             this.globalOptionSetComboBox.Validated += new System.EventHandler(this.globalOptionSetComboBox_Validated);
             // 
@@ -57,7 +59,7 @@
             this.Controls.Add(this.globalOptionSetComboBox);
             this.Controls.Add(this.label1);
             this.Name = "GlobalOptionSetRuleEditor";
-            this.Size = new System.Drawing.Size(1122, 607);
+            this.Size = new System.Drawing.Size(1097, 607);
             this.ResumeLayout(false);
             this.PerformLayout();
 
