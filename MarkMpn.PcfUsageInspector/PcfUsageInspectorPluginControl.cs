@@ -18,32 +18,6 @@ namespace MarkMpn.PcfUsageInspector
 {
     public partial class PcfUsageInspectorPluginControl : PluginControlBase, IGitHubPlugin
     {
-        class CustomControl
-        {
-            public Guid Id { get; set; }
-            public string Name { get; set; }
-            public List<Solution> Solutions { get; } = new List<Solution>();
-            public List<Dependency> Dependencies { get; } = new List<Dependency>();
-        }
-
-        class Dependency
-        {
-            public Guid Id { get; set; }
-            public string Type { get; set; }
-            public string EntityName { get; set; }
-            public string Name { get; set; }
-        }
-
-        class Solution : IComparable
-        {
-            public Guid Id { get; set; }
-            public string Name { get; set; }
-
-            public int CompareTo(object obj)
-            {
-                return Name.CompareTo(((Solution)obj).Name);
-            }
-        }
 
         private static readonly Dictionary<string, string> Deprecations = new Dictionary<string, string>
         {
@@ -57,6 +31,7 @@ namespace MarkMpn.PcfUsageInspector
             ["MscrmControls.MultiSelectPicklist.MultiSelectPicklistControl"] = "This control is deprecated"
         };
 
+        private List<CustomControl> _controls;
         private ExpectedControls _expectedControls;
 
         string IGitHubPlugin.UserName => "MarkMpn";
@@ -228,6 +203,7 @@ namespace MarkMpn.PcfUsageInspector
                     }
 
                     var controls = (Dictionary<Guid, CustomControl>)args.Result;
+                    _controls = controls.Values.ToList();
                     var solutions = ((List<Solution>)solutionComboBox.DataSource).ToDictionary(sln => sln.Id);
                     dataGridView.Rows.Clear();
 
@@ -306,7 +282,7 @@ namespace MarkMpn.PcfUsageInspector
 
         private void btnExpectedControls_Click(object sender, EventArgs e)
         {
-            using (var form = new ExpectedControlsForm(_expectedControls))
+            using (var form = new ExpectedControlsForm(_controls, _expectedControls.Rules))
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
