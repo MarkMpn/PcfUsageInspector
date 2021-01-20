@@ -13,6 +13,11 @@ using Microsoft.Xrm.Sdk;
 using McTools.Xrm.Connection;
 using System.Diagnostics;
 using XrmToolBox.Extensibility.Interfaces;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Metadata.Query;
+using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Crm.Sdk.Messages;
+using System.Xml;
 
 namespace MarkMpn.PcfUsageInspector
 {
@@ -61,7 +66,7 @@ namespace MarkMpn.PcfUsageInspector
         {
             WorkAsync(new WorkAsyncInfo
             {
-                Message = "Loading PCF Usage",
+                Message = "Loading Custom Controls...",
                 Work = (worker, args) =>
                 {
                     var solutions = new Dictionary<Guid, Solution>();
@@ -188,11 +193,100 @@ namespace MarkMpn.PcfUsageInspector
                         qry.PageInfo.PagingCookie = results.PagingCookie;
                     }
 
+                    if (_expectedControls.Rules.Count > 0)
+                    {
+                        worker.ReportProgress(0, "Loading Metadata...");
+
+                        // Load attribute details and apply rules
+                        var metadataQry = new RetrieveMetadataChangesRequest
+                        {
+                            Query = new EntityQueryExpression
+                            {
+                                AttributeQuery = new AttributeQueryExpression
+                                {
+                                    Properties = new MetadataPropertiesExpression
+                                    {
+                                        PropertyNames =
+                                        {
+                                            nameof(AttributeMetadata.EntityLogicalName),
+                                            nameof(AttributeMetadata.LogicalName),
+                                            nameof(AttributeMetadata.MetadataId),
+                                            nameof(PicklistAttributeMetadata.OptionSet)
+                                        }
+                                    }
+                                },
+                                Properties = new MetadataPropertiesExpression
+                                {
+                                    PropertyNames =
+                                    {
+                                        nameof(EntityMetadata.Attributes)
+                                    }
+                                }
+                            }
+                        };
+
+                        foreach (var rule in _expectedControls.Rules)
+                            rule.AddCriteria(metadataQry);
+
+                        var metadata = (RetrieveMetadataChangesResponse)Service.Execute(metadataQry);
+
+                        foreach (var attribute in metadata.EntityMetadata.SelectMany(e => e.Attributes))
+                        {
+                            var expectedControlName = _expectedControls.Rules.FirstOrDefault(r => r.IsMatch(attribute))?.ControlName;
+                            if (expectedControlName == null)
+                                continue;
+
+                            var expectedControl = controls.Values.FirstOrDefault(c => c.Name == expectedControlName);
+                            if (expectedControl == null)
+                                continue;
+
+                            worker.ReportProgress(0, $"Checking expected control for {attribute.EntityLogicalName}.{attribute.LogicalName}...");
+
+                            var formsQry = new QueryExpression("systemform")
+                            {
+                                ColumnSet = new ColumnSet("name", "formxml"),
+                                LinkEntities =
+                                {
+                                    new LinkEntity("systemform", "dependency", "formid", "dependentcomponentobjectid", JoinOperator.Inner)
+                                    {
+                                        LinkCriteria = new FilterExpression
+                                        {
+                                            Conditions =
+                                            {
+                                                new ConditionExpression("requiredcomponentobjectid", ConditionOperator.Equal, attribute.MetadataId)
+                                            }
+                                        }
+                                    }
+                                }
+                            };
+
+                            foreach (var form in Service.RetrieveMultiple(formsQry).Entities)
+                            {
+                                var xml = new XmlDocument();
+                                xml.LoadXml(form.GetAttributeValue<string>("formxml"));
+
+                                foreach (XmlElement control in xml.SelectNodes("//control[@datafieldname='" + attribute.LogicalName + "']"))
+                                {
+                                    var id = control.GetAttribute("uniqueid");
+
+                                    var controlEnabled = (XmlElement) xml.SelectSingleNode($"//controlDescription[@forControl='{id}']/customControl[@name='{expectedControlName}']");
+
+                                    if (controlEnabled == null)
+                                        expectedControl.MissingForms.Add(new Dependency { Type = "Form", Id = form.Id, EntityName = attribute.EntityLogicalName, Name = form.GetAttributeValue<string>("name") });
+                                }
+                            }
+                        }
+                    }
+
                     var solutionList = solutions.Values.ToList();
                     solutionList.Sort();
                     solutionList.Insert(0, new Solution { Id = Guid.Empty, Name = "-- All --" });
                     ExecuteMethod(() => solutionComboBox.DataSource = solutionList);
                     args.Result = controls;
+                },
+                ProgressChanged = (args) =>
+                {
+                    SetWorkingMessage(args.UserState.ToString());
                 },
                 PostWorkCallBack = (args) =>
                 {
@@ -215,7 +309,8 @@ namespace MarkMpn.PcfUsageInspector
                         row.Cells[0] = new DataGridViewTextBoxCell { Value = String.Join(", ", control.Solutions.Select(s => s.Name)) };
                         row.Cells[1] = new DataGridViewTextBoxCell { Value = control.Name };
                         row.Cells[2] = new DataGridViewTextBoxCell { Value = String.Join(", ", control.Dependencies.Select(dep => $"{dep.Type} \"{dep.Name}\" on {dep.EntityName}")) };
-
+                        row.Cells[3] = new DataGridViewTextBoxCell { Value = String.Join(", ", control.MissingForms.Select(dep => $"{dep.Type} \"{dep.Name}\" on {dep.EntityName}")) };
+                        
                         if (Deprecations.TryGetValue(control.Name, out var deprecation))
                         {
                             if (control.Dependencies.Any())
@@ -229,6 +324,10 @@ namespace MarkMpn.PcfUsageInspector
                             }
 
                             row.Cells[2].ToolTipText = deprecation;
+                        }
+                        else if (control.MissingForms.Any())
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Gold;
                         }
                     }
 
@@ -244,7 +343,7 @@ namespace MarkMpn.PcfUsageInspector
         {
             base.UpdateConnection(newService, detail, actionName, parameter);
 
-            if (detail != null)
+            if (detail != null && _expectedControls != null)
                 LoadControls();
         }
 

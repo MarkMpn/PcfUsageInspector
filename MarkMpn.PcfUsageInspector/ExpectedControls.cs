@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Metadata.Query;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace MarkMpn.PcfUsageInspector
 {
@@ -24,6 +27,19 @@ namespace MarkMpn.PcfUsageInspector
         public abstract bool IsMatch(AttributeMetadata attribute);
 
         public abstract string GetParameterDescription();
+
+        internal abstract void AddCriteria(RetrieveMetadataChangesRequest metadataQry);
+
+        protected void AddFilter(RetrieveMetadataChangesRequest metadataQry, MetadataFilterExpression filter)
+        {
+            if (metadataQry.Query.AttributeQuery.Criteria == null)
+            {
+                var or = new MetadataFilterExpression(LogicalOperator.Or);
+                metadataQry.Query.AttributeQuery.Criteria = or;
+            }
+
+            metadataQry.Query.AttributeQuery.Criteria.Filters.Add(filter);
+        }
     }
 
     [Description("Single Attribute")]
@@ -39,6 +55,19 @@ namespace MarkMpn.PcfUsageInspector
         }
 
         public override string GetParameterDescription() => $"Attribute {EntityName}.{AttributeName}";
+
+        internal override void AddCriteria(RetrieveMetadataChangesRequest metadataQry)
+        {
+            var filter = new MetadataFilterExpression
+            {
+                Conditions =
+                {
+                    new MetadataConditionExpression(nameof(AttributeMetadata.LogicalName), MetadataConditionOperator.Equals, AttributeName)
+                }
+            };
+
+            AddFilter(metadataQry, filter);
+        }
     }
 
     [Description("Attribute Type")]
@@ -52,6 +81,19 @@ namespace MarkMpn.PcfUsageInspector
         }
 
         public override string GetParameterDescription() => $"All {AttributeTypeName} Attributes";
+
+        internal override void AddCriteria(RetrieveMetadataChangesRequest metadataQry)
+        {
+            var filter = new MetadataFilterExpression
+            {
+                Conditions =
+                {
+                    new MetadataConditionExpression(nameof(AttributeMetadata.AttributeTypeName), MetadataConditionOperator.Equals, AttributeTypeName)
+                }
+            };
+
+            AddFilter(metadataQry, filter);
+        }
     }
 
     [Description("Global Option Set")]
@@ -65,5 +107,18 @@ namespace MarkMpn.PcfUsageInspector
         }
 
         public override string GetParameterDescription() => $"All {OptionSetName} Picklist Attributes";
+
+        internal override void AddCriteria(RetrieveMetadataChangesRequest metadataQry)
+        {
+            var filter = new MetadataFilterExpression
+            {
+                Conditions =
+                {
+                    new MetadataConditionExpression(nameof(AttributeMetadata.AttributeTypeName), MetadataConditionOperator.Equals, AttributeTypeDisplayName.PicklistType)
+                }
+            };
+
+            AddFilter(metadataQry, filter);
+        }
     }
 }
