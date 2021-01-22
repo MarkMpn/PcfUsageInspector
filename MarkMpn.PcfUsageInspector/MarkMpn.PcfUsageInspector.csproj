@@ -132,6 +132,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeRuleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AttributeRuleEditor.Designer.cs">
+      <DependentUpon>AttributeRuleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AttributeTypeRuleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AttributeTypeRuleEditor.Designer.cs">
+      <DependentUpon>AttributeTypeRuleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControl.cs" />
+    <Compile Include="Dependency.cs" />
+    <Compile Include="ExpectedControls.cs" />
+    <Compile Include="ExpectedControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExpectedControlsForm.Designer.cs">
+      <DependentUpon>ExpectedControlsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalOptionSetRuleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GlobalOptionSetRuleEditor.Designer.cs">
+      <DependentUpon>GlobalOptionSetRuleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IRuleEditor.cs" />
     <Compile Include="PcfUsageInspectorPlugin.cs" />
     <Compile Include="PcfUsageInspectorPluginControl.cs">
       <SubType>UserControl</SubType>
@@ -145,12 +173,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RuleEditorBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RuleEditorBase.Designer.cs">
+      <DependentUpon>RuleEditorBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Solution.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AttributeRuleEditor.resx">
+      <DependentUpon>AttributeRuleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeTypeRuleEditor.resx">
+      <DependentUpon>AttributeTypeRuleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExpectedControlsForm.resx">
+      <DependentUpon>ExpectedControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlobalOptionSetRuleEditor.resx">
+      <DependentUpon>GlobalOptionSetRuleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PcfUsageInspectorPluginControl.resx">
       <DependentUpon>PcfUsageInspectorPluginControl.cs</DependentUpon>
     </EmbeddedResource>
