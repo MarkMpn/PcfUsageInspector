@@ -347,17 +347,7 @@ namespace MarkMpn.PcfUsageInspector
                 LoadControls();
         }
 
-        private void nameTextBox_TextChanged(object sender, EventArgs e)
-        {
-            FilterItems();
-        }
-
-        private void solutionComboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            FilterItems();
-        }
-
-        private void FilterItems()
+        private void FilterItems(object sender, EventArgs e)
         {
             var solutionId = (Guid)solutionComboBox.SelectedValue;
 
@@ -366,11 +356,28 @@ namespace MarkMpn.PcfUsageInspector
                 var control = (CustomControl)row.Tag;
 
                 if (control.Name.IndexOf(nameTextBox.Text, StringComparison.OrdinalIgnoreCase) == -1)
+                {
                     row.Visible = false;
+                }
                 else if (solutionId != Guid.Empty && !control.Solutions.Any(s => s.Id == solutionId))
+                {
                     row.Visible = false;
+                }
+                else if (Deprecations.TryGetValue(control.Name, out var deprecation))
+                {
+                    if (control.Dependencies.Any())
+                        row.Visible = deprecatedUsedCheckBox.Checked;
+                    else
+                        row.Visible = deprecatedUnusedCheckBox.Checked;
+                }
+                else if (control.MissingForms.Any())
+                {
+                    row.Visible = missingExpectedUsageCheckBox.Checked;
+                }
                 else
-                    row.Visible = true;
+                {
+                    row.Visible = normalCheckBox.Checked;
+                }
             }
         }
 

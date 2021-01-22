@@ -11,9 +11,13 @@
     <iconUrl>http://markcarrington.dev/pcf-usage-inspector-icon/</iconUrl>
     <description>PCF Usage Inspector makes it simple to identify which PCF controls are in use on which forms or views.
 
-It also highlights controls known to be deprecated to simplify the process of updating to use new alternatives.</description>
+It also highlights controls known to be deprecated to simplify the process of updating to use new alternatives,
+and controls that aren't being used where they are expected.</description>
     <summary>Identify where PCF controls are being used</summary>
-    <releaseNotes>First release!</releaseNotes>
+    <releaseNotes>Set up rules to identify which controls should be used for which attributes and highlight any
+forms that aren't using the expected controls.
+
+Filter controls by status to quickly find problems.</releaseNotes>
     <copyright>Copyright © 2021 Mark Carrington</copyright>
     <language>en-GB</language>
     <tags>XrmToolBox PCF Usage</tags>
