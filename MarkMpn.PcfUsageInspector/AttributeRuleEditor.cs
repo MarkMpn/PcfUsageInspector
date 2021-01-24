@@ -24,18 +24,21 @@ namespace MarkMpn.PcfUsageInspector
         {
             base.OnRuleChanged();
 
-            var entities = (RetrieveMetadataChangesResponse)Service.Execute(new RetrieveMetadataChangesRequest
+            if (Service != null)
             {
-                Query = new EntityQueryExpression
+                var entities = (RetrieveMetadataChangesResponse)Service.Execute(new RetrieveMetadataChangesRequest
                 {
-                    Properties = new MetadataPropertiesExpression
+                    Query = new EntityQueryExpression
                     {
-                        PropertyNames = { nameof(EntityMetadata.LogicalName) }
+                        Properties = new MetadataPropertiesExpression
+                        {
+                            PropertyNames = { nameof(EntityMetadata.LogicalName) }
+                        }
                     }
-                }
-            });
+                });
 
-            entityNameComboBox.Items.AddRange(entities.EntityMetadata.Select(e => e.LogicalName).OrderBy(name => name).ToArray());
+                entityNameComboBox.Items.AddRange(entities.EntityMetadata.Select(e => e.LogicalName).OrderBy(name => name).ToArray());
+            }
 
             var rule = (AttributeRule)Rule;
             entityNameComboBox.Text = rule.EntityName;
@@ -62,7 +65,7 @@ namespace MarkMpn.PcfUsageInspector
         {
             attributeNameComboBox.Items.Clear();
 
-            if (entityNameComboBox.SelectedIndex == -1)
+            if (entityNameComboBox.SelectedIndex == -1 || Service == null)
                 return;
 
             var entities = (RetrieveMetadataChangesResponse)Service.Execute(new RetrieveMetadataChangesRequest

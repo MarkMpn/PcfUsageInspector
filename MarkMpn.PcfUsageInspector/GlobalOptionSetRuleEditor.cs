@@ -22,8 +22,11 @@ namespace MarkMpn.PcfUsageInspector
         {
             base.OnRuleChanged();
 
-            var optionsets = (RetrieveAllOptionSetsResponse) Service.Execute(new RetrieveAllOptionSetsRequest());
-            globalOptionSetComboBox.Items.AddRange(optionsets.OptionSetMetadata.Select(os => os.Name).OrderBy(name => name).ToArray());
+            if (Service != null)
+            {
+                var optionsets = (RetrieveAllOptionSetsResponse)Service.Execute(new RetrieveAllOptionSetsRequest());
+                globalOptionSetComboBox.Items.AddRange(optionsets.OptionSetMetadata.Select(os => os.Name).OrderBy(name => name).ToArray());
+            }
 
             var rule = (GlobalOptionSetRule)Rule;
             globalOptionSetComboBox.Text = rule.OptionSetName;
