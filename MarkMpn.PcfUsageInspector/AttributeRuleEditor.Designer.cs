@@ -50,8 +50,9 @@
             this.entityNameComboBox.FormattingEnabled = true;
             this.entityNameComboBox.Location = new System.Drawing.Point(6, 16);
             this.entityNameComboBox.Name = "entityNameComboBox";
-            this.entityNameComboBox.Size = new System.Drawing.Size(1088, 21);
+            this.entityNameComboBox.Size = new System.Drawing.Size(1413, 21);
             this.entityNameComboBox.TabIndex = 1;
+            this.entityNameComboBox.SelectedIndexChanged += new System.EventHandler(this.entityNameComboBox_SelectedIndexChanged);
             this.entityNameComboBox.Validated += new System.EventHandler(this.entityNameComboBox_Validated);
             // 
             // label2
@@ -70,7 +71,7 @@
             this.attributeNameComboBox.FormattingEnabled = true;
             this.attributeNameComboBox.Location = new System.Drawing.Point(6, 67);
             this.attributeNameComboBox.Name = "attributeNameComboBox";
-            this.attributeNameComboBox.Size = new System.Drawing.Size(1088, 21);
+            this.attributeNameComboBox.Size = new System.Drawing.Size(1413, 21);
             this.attributeNameComboBox.TabIndex = 3;
             this.attributeNameComboBox.Validated += new System.EventHandler(this.attributeNameComboBox_Validated);
             // 
@@ -83,7 +84,7 @@
             this.Controls.Add(this.entityNameComboBox);
             this.Controls.Add(this.label1);
             this.Name = "AttributeRuleEditor";
-            this.Size = new System.Drawing.Size(1097, 607);
+            this.Size = new System.Drawing.Size(1422, 607);
             this.ResumeLayout(false);
             this.PerformLayout();
 
