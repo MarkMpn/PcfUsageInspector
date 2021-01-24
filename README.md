@@ -17,7 +17,7 @@ to find the ones you're interested in.
 As well as the solution and control name, you can also see every form or view that the control is used in to make it
 easier to find instances of the control that may need to be updated.
 
-![PCF Usage Inspector Main View](Screenshots/Main View.png)
+![PCF Usage Inspector Main View](Screenshots/Main%20View.png)
 
 ## Deprecated Controls
 
@@ -37,7 +37,7 @@ for the `account.address1_line` attribute.
 
 You can manage these expectations using the "Edit Expected Controls" button on the main page.
 
-![Expected Control Rules](Screenshots/Expected Controls.png)
+![Expected Control Rules](Screenshots/Expected%20Controls.png)
 
 Click the "Add" button to add a new rule. You can add a rule for
 
