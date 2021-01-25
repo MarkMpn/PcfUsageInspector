@@ -25,7 +25,7 @@ namespace MarkMpn.PcfUsageInspector
             _ruleTypeToEditorType = new Dictionary<Type, Type>();
             _rules = rules;
             _org = org;
-            controlComboBox.Items.AddRange(controls.ToArray());
+            controlComboBox.Items.AddRange(controls.OrderBy(c => c.Name).ToArray());
 
             foreach (var type in GetType().Assembly.GetTypes().Where(t => t.BaseType == typeof(Rule)))
             {

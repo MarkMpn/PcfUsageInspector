@@ -32,12 +32,6 @@ namespace MarkMpn.PcfUsageInspector
 
         protected void AddFilter(RetrieveMetadataChangesRequest metadataQry, MetadataFilterExpression filter)
         {
-            if (metadataQry.Query.AttributeQuery.Criteria == null)
-            {
-                var or = new MetadataFilterExpression(LogicalOperator.Or);
-                metadataQry.Query.AttributeQuery.Criteria = or;
-            }
-
             metadataQry.Query.AttributeQuery.Criteria.Filters.Add(filter);
         }
     }
@@ -88,7 +82,7 @@ namespace MarkMpn.PcfUsageInspector
             {
                 Conditions =
                 {
-                    new MetadataConditionExpression(nameof(AttributeMetadata.AttributeTypeName), MetadataConditionOperator.Equals, AttributeTypeName)
+                    new MetadataConditionExpression(nameof(AttributeMetadata.AttributeTypeName), MetadataConditionOperator.Equals, new AttributeTypeDisplayName { Value = AttributeTypeName })
                 }
             };
 
