@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Xrm.Sdk;
 
 namespace MarkMpn.PcfUsageInspector
 {
@@ -19,6 +20,8 @@ namespace MarkMpn.PcfUsageInspector
             InitializeComponent();
             Dock = DockStyle.Fill;
         }
+
+        public IOrganizationService Service { get; set; }
 
         public Rule Rule
         {

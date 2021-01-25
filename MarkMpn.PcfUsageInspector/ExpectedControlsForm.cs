@@ -7,21 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Xrm.Sdk;
 
 namespace MarkMpn.PcfUsageInspector
 {
     partial class ExpectedControlsForm : Form
     {
         private IDictionary<Type, Type> _ruleTypeToEditorType;
+        private IOrganizationService _org;
         private List<Rule> _rules;
         private RuleEditorBase _ruleEditor;
 
-        public ExpectedControlsForm(List<CustomControl> controls, List<Rule> rules)
+        public ExpectedControlsForm(List<CustomControl> controls, List<Rule> rules, IOrganizationService org)
         {
             InitializeComponent();
 
             _ruleTypeToEditorType = new Dictionary<Type, Type>();
             _rules = rules;
+            _org = org;
             controlComboBox.Items.AddRange(controls.ToArray());
 
             foreach (var type in GetType().Assembly.GetTypes().Where(t => t.BaseType == typeof(Rule)))
@@ -82,6 +85,7 @@ namespace MarkMpn.PcfUsageInspector
             controlComboBox.SelectedItem = controlComboBox.Items.OfType<CustomControl>().SingleOrDefault(cc => cc.Name == rule.ControlName);
             var editorType = _ruleTypeToEditorType[rule.GetType()];
             _ruleEditor = (RuleEditorBase) Activator.CreateInstance(editorType);
+            _ruleEditor.Service = _org;
             _ruleEditor.Rule = rule;
             _ruleEditor.ParameterChanged += (s, a) => ruleListView.SelectedItems[0].SubItems[1].Text = rule.GetParameterDescription();
             splitContainer1.Panel2.Controls.Add(_ruleEditor);

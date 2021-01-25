@@ -388,7 +388,7 @@ namespace MarkMpn.PcfUsageInspector
 
         private void btnExpectedControls_Click(object sender, EventArgs e)
         {
-            using (var form = new ExpectedControlsForm(_controls, _expectedControls.Rules))
+            using (var form = new ExpectedControlsForm(_controls, _expectedControls.Rules, Service))
             {
                 form.ShowDialog(this);
                 
