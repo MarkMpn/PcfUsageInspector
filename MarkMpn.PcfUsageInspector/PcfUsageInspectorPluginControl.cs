@@ -213,6 +213,10 @@ namespace MarkMpn.PcfUsageInspector
                                             nameof(AttributeMetadata.MetadataId),
                                             nameof(PicklistAttributeMetadata.OptionSet)
                                         }
+                                    },
+                                    Criteria = new MetadataFilterExpression
+                                    {
+                                        FilterOperator = LogicalOperator.Or
                                     }
                                 },
                                 Properties = new MetadataPropertiesExpression
@@ -330,6 +334,8 @@ namespace MarkMpn.PcfUsageInspector
                             row.DefaultCellStyle.BackColor = Color.Gold;
                         }
                     }
+
+                    FilterItems(this, EventArgs.Empty);
 
                     dataGridView.AutoResizeColumns();
                 }
