@@ -33,7 +33,13 @@ namespace MarkMpn.PcfUsageInspector
             ["MscrmControls.Knob.ArcKnobControl"] = "This control is deprecated",
             ["MscrmControls.LinearGauge.LinearGaugeControl"] = "This control is deprecated",
             ["MscrmControls.WebsitePreview.PreviewControl"] = "This control is deprecated",
-            ["MscrmControls.MultiSelectPicklist.MultiSelectPicklistControl"] = "This control is deprecated"
+            ["MscrmControls.MultiSelectPicklist.MultiSelectPicklistControl"] = "This control is deprecated",
+            ["MscrmControls.AutoComplete.AutoCompleteControl"] = "This control is deprecated",
+            ["MscrmControls.InputMask.InputMaskControl"] = "This control is deprecated",
+            ["MscrmControls.Multimedia.MultimediaPlayerControl"] = "This control is deprecated",
+            ["MscrmControls.NumberInput.NumberInputControl"] = "This control is deprecated",
+            ["MscrmControls.OptionSet.OptionSetControl"] = "This control is deprecated",
+            ["MscrmControls.Rating.StarRatingControl"] = "This control is deprecated"
         };
 
         private List<CustomControl> _controls;
